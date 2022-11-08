@@ -27,6 +27,7 @@ def main():
     fileArray = fileValues(file)
     nodeArray = nodeNames(fileArray)
 
+    print(fileArray)
     print (nodeArray)
 
 main()
