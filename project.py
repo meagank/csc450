@@ -3,31 +3,26 @@ import sys
 
 
 
-def fileValues(file):
-    with open(file,'r') as csvFile:
+def getValues(file):
+    with open(file,'rt') as csvFile:
         fileInput = csv.reader(csvFile)
         fileArray = []
 
         for n in fileInput:
             fileArray.append(n)
 
-    return fileArray
+        nodes = []
+        for n in range(1,len(fileArray[0])):
+            nodes.append(fileArray[0][n])
 
+    return fileArray,nodes
 
-def nodeNames(fileArray):
-# just node names
-    nodes = []
-    for n in range(1,len(fileArray[0])):
-        nodes.append(fileArray[0][n])
-    return(nodes)
 
 def main():
     file = sys.argv[1]
     letter = input("Please, provide the source node: ")
-    fileArray = fileValues(file)
-    nodeArray = nodeNames(fileArray)
+    data,nodes = getValues(file)
 
-    print(fileArray)
-    print (nodeArray)
+    print(data)
 
 main()
