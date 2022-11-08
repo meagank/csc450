@@ -4,25 +4,25 @@ import sys
 
 
 def getValues(file):
-    with open(file,'rt') as csvFile:
+    with open(file,'r') as csvFile:
         fileInput = csv.reader(csvFile)
-        fileArray = []
+        data = []
 
         for n in fileInput:
-            fileArray.append(n)
+            data.append(n)
 
-        nodes = []
-        for n in range(1,len(fileArray[0])):
-            nodes.append(fileArray[0][n])
+        data[0].remove("")
+        names = data[0]
 
-    return fileArray,nodes
+    return data,names
 
 
 def main():
     file = sys.argv[1]
     letter = input("Please, provide the source node: ")
-    data,nodes = getValues(file)
+    data,names = getValues(file)
 
     print(data)
+    print(names)
 
 main()
