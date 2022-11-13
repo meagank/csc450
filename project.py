@@ -79,9 +79,9 @@ class Node:
             self.Dv = {i:INF}
 
         self.Dv[self.name] = self.Dx
-        self.adjacent = [i for i in self.Dx if i != name and self.Cx[i] != 9999]
-        
-
+        for i in self.Dx:
+            if(i != name and self.Cx[i] != 9999):
+                self.adjacent = [i]     
 
         Node.allNodes.update({name:self})
         self.updateDv()
