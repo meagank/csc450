@@ -1,18 +1,15 @@
 import csv
 import sys
 
-with open(file,'r') as csvFile:
-    fileInput = csv.reader(csvFile)
-    fileArray = []
+def openCSV(file):
+    with open(file,'r') as csvFile:
+        fileInput = csv.reader(csvFile)
+        fileArray = []
 
-    for n in fileInput:
-        fileArray.append(n)
+        for n in fileInput:
+            fileArray.append(n)
 
-nodes = []
-for n in range(len(fileArray[0])):
-    nodes.append(fileArray[0][n])
-
-print(nodes)
+    return fileArray
 
 def recur(previous:dict, source:str, current:str):
     if current == source:
@@ -45,7 +42,7 @@ def dijAlg(nodes:list, source:str):
             p[currentNode] = source
         else:
             #else D(v) = inf
-            D[CurrentNode] = 9999
+            D[currentNode] = 9999
 
     currentNode = source
 
@@ -69,23 +66,36 @@ def dijAlg(nodes:list, source:str):
     return(D, p)
 
 #creating the Node class
+
+
+
 class Node:
     allNodes = {}
 
     def __init__(self, name, nodes):
         self.name = name
+
+        #for i in nodes:
+            #self.Dx = self.Cx = cost[name][i]
         self.Dx = self.Cx = {i:cost[name][i] for i in nodes}
 
-        inf = {i:9999 for i in nodes}
-        self.Dv = {i:inf for i in nodes}
+
+        INF = {i:9999 for i in nodes}
+        self.Dv = {i:INF for i in nodes}
         self.Dv[self.name] = self.Dx
         self.adjacent = [i for i in self.Dx if i != name and self.Cx[i] != 9999]
+        
+
 
         Node.allNodes.update({name:self})
         self.updateDv()
 
 #implementing Bellman-Ford algorithm to calculate distance vector
-    #def bellFord
+    def bellFord(self,current):
+        for node in self.Dx:
+            if (self.Cx[current]+self.Dv[current][node] < self.Dx[node]):
+                self.Dx[node] = (self.Cx[current]+self.Dv[current][node])
+                self.updateDv()
 
     def updateDv(self):
         for node in self.adjacent:
@@ -101,24 +111,28 @@ class Node:
         return ', '.join([str(self.Dx[i]) for i in self.Dx])
 
 #implementing the distance vector function
-def distanceVector(cvsFile:list):
+def distanceVector(csvFile:list):
     return {i:Node(i, csvFile) for i in csvFile}
 
 #main function
 if __name__ == '__main__':
     file = sys.argv[1]
     source = input("Please, provide the source node: ")
-    data = readCSV(file)
+    data = openCSV(file)
     data[0].remove("")
     header = data[0]
     cost = {i[0]:{header[j]:int(i[1:][j]) for j in range(len(i[1:]))} for i in data[1:]}
 
     #calling Dijkstra's Algorithm
-    D, p = dijAlg(data[0], source)
-    tree = ', '.join(p.values())
-    costs = ', '.join([f"{k}:{v}" for k,v in D.items()])
+    #D, p = dijAlg(data[0], source)
+    #tree = ', '.join(p.values())
+    #costs = ', '.join([f"{k}:{v}" for k,v in D.items()])
 
     #print statements
-    print("Shortest path tree for node {}:\n {}".format(source, tree))
-    print("Costs of least-cost paths for node {}:\n {}".format(source, costs))
-    print("\nDistance vector for node {}:", distance)
+    #print("Shortest path tree for node {}:\n {}".format(source, tree))
+    #print("Costs of least-cost paths for node {}:\n {}".format(source, costs))
+    #print("\nDistance vector for node {}:", distance)
+
+    result = distanceVector(header)
+    for i in result:
+        print(f"Distance vector for node {i}: {result[i]}")
