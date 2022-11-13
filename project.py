@@ -74,14 +74,15 @@ class Node:
 
     def __init__(self, name, nodes):
         self.name = name
-
-        #for i in nodes:
-            #self.Dx = self.Cx = cost[name][i]
+        
         self.Dx = self.Cx = {i:cost[name][i] for i in nodes}
 
 
-        INF = {i:9999 for i in nodes}
-        self.Dv = {i:INF for i in nodes}
+
+        for i in nodes:
+            INF = {i:9999}
+            self.Dv = {i:INF}
+
         self.Dv[self.name] = self.Dx
         self.adjacent = [i for i in self.Dx if i != name and self.Cx[i] != 9999]
         
@@ -108,10 +109,11 @@ class Node:
                 currentNode.bellFord(self.name)
 
     def __str__(self):
+
         return ', '.join([str(self.Dx[i]) for i in self.Dx])
 
 #implementing the distance vector function
-def distanceVector(csvFile:list):
+def distanceVector(csvFile):
     return {i:Node(i, csvFile) for i in csvFile}
 
 #main function
