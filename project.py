@@ -66,9 +66,6 @@ def dijAlg(nodes:list, source:str):
     return(D, p)
 
 #creating the Node class
-
-
-
 class Node:
     allNodes = {}
 
@@ -76,8 +73,6 @@ class Node:
         self.name = name
         
         self.Dx = self.Cx = {i:cost[name][i] for i in nodes}
-
-
 
         for i in nodes:
             INF = {i:9999}
