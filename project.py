@@ -88,7 +88,7 @@ class Node:
 #implementing Bellman-Ford algorithm to calculate distance vector
     def bellman(self,current):
         for node in self.Dx:
-            temp = (self.Cx[current] + self.Dv[current][node]) # so i don't need to rewrite it each time
+            temp = (self.Cx[current] + self.Dv[current][node]) # so doesn't need to rewrite it each time
             if (temp < self.Dx[node]):
                 self.Dx[node] = (temp)
                 self.updateDv()
@@ -128,7 +128,7 @@ if __name__ == '__main__':
     #print statements
     print("Shortest path tree for node {}:\n {}".format(source, tree))
     print("Costs of least-cost paths for node {}:\n {}".format(source, costs))
-    print("\nDistance vector for node {}:", distance)
+    print("\nDistance vector for node {}:", costs)
 
     result = distanceVector(heads)
     for i in result:
