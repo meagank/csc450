@@ -118,6 +118,9 @@ if __name__ == '__main__':
     data = openCSV(file)
     data[0].remove("")
     heads = data[0]
+    headList = ''.join(heads)
+    #print(headList)
+    #print(heads)
     cost = {i[0]:{heads[j]:int(i[1:][j]) for j in range(len(i[1:]))} for i in data[1:]}
 
     #calling Dijkstra's Algorithm
