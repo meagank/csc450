@@ -14,8 +14,9 @@ def openCSV(file):
 def recur(previous:dict, source:str, current:str):
     if current == source:
         return source
-    return recur(previous, source, previous[current] + current)
+    return recur(previous, source, previous[current]) + current
 
+#shortest path function using recur to find it
 def shortestTree(previous:dict, source:str):
     tree = {}
     for i in previous:
@@ -54,6 +55,7 @@ def dijAlg(nodes:list, source:str):
         N.append(w)
 
         exNodes = [i for i in nodes if i not in N]
+
         for currentNode in exNodes:
             #D(v) = minimum of D(v) and D(w) + c(w,v)
             nextD = min(D[currentNode], (D[w] + cost[w][currentNode]))
@@ -119,14 +121,14 @@ if __name__ == '__main__':
     cost = {i[0]:{heads[j]:int(i[1:][j]) for j in range(len(i[1:]))} for i in data[1:]}
 
     #calling Dijkstra's Algorithm
-    #D, P = dijAlg(data[0], source)
-    #tree = ', '.join(p.values())
-    #costs = ', '.join([f"{k}:{v}" for k,v in D.items()])
+    D, P = dijAlg(data[0], source)
+    tree = ', '.join(P.values())
+    costs = ', '.join([f"{k}:{v}" for k,v in D.items()])
 
     #print statements
-    #print("Shortest path tree for node {}:\n {}".format(source, tree))
-    #print("Costs of least-cost paths for node {}:\n {}".format(source, costs))
-    #print("\nDistance vector for node {}:", distance)
+    print("Shortest path tree for node {}:\n {}".format(source, tree))
+    print("Costs of least-cost paths for node {}:\n {}".format(source, costs))
+    print("\nDistance vector for node {}:", distance)
 
     result = distanceVector(heads)
     for i in result:
