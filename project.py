@@ -30,7 +30,7 @@ def dijAlg(nodes:list, source:str):
     #D(v)- current cost of least cost path
     D = {}
     #p(v)- previous node in path
-    p = {}
+    P = {}
     #N'- set of nodes where least cost path known
     N = list(source)
 
@@ -39,7 +39,7 @@ def dijAlg(nodes:list, source:str):
         if(cost[currentNode][source] != 9999):
             #then D(v) = c(u,v)
             D[currentNode] = cost[currentNode][source]
-            p[currentNode] = source
+            P[currentNode] = source
         else:
             #else D(v) = inf
             D[currentNode] = 9999
@@ -59,11 +59,11 @@ def dijAlg(nodes:list, source:str):
             nextD = min(D[currentNode], (D[w] + cost[w][currentNode]))
             if(nextD != D[currentNode]):
                 D[currentNode] = nextD
-                p[currentNode] = w
+                P[currentNode] = w
 
-    p = shortestTree(p, source)
+    P = shortestTree(P, source)
 
-    return(D, p)
+    return(D, P)
 
 #creating the Node class
 class Node:
@@ -75,8 +75,7 @@ class Node:
         self.Dx = self.Cx = {i:cost[name][i] for i in nodes}
 
         for i in nodes:
-            INF = {i:9999}
-            self.Dv = {i:INF}
+            self.Dv = {i:9999}
 
         self.Dv[self.name] = self.Dx
         self.adjacent = [i for i in self.Dx if i != name and self.Cx[i] != 9999]  
@@ -85,21 +84,22 @@ class Node:
         self.updateDv()
 
 #implementing Bellman-Ford algorithm to calculate distance vector
-    def bellFord(self,current):
+    def bellman(self,current):
         for node in self.Dx:
-            if (self.Cx[current]+self.Dv[current][node] < self.Dx[node]):
-                self.Dx[node] = (self.Cx[current]+self.Dv[current][node])
+            temp = (self.Cx[current] + self.Dv[current][node]) # so i don't need to rewrite it each time
+            if (temp < self.Dx[node]):
+                self.Dx[node] = (temp)
                 self.updateDv()
 
     def updateDv(self):
         for node in self.adjacent:
             if node in Node.allNodes:
-                currentNode = Node.allNodes[node]
-                self.Dv[currentNode.name] = currentNode.Dx
-                self.bellFord(currentNode.name)
+                current = Node.allNodes[node]
+                self.Dv[current.name] = current.Dx
+                self.bellman(current.name)
 
-                currentNode.Dv[self.name] = self.Dx
-                currentNode.bellFord(self.name)
+                current.Dv[self.name] = self.Dx
+                current.bellman(self.name)
 
     def __str__(self):
 
@@ -115,11 +115,11 @@ if __name__ == '__main__':
     source = input("Please, provide the source node: ")
     data = openCSV(file)
     data[0].remove("")
-    header = data[0]
-    cost = {i[0]:{header[j]:int(i[1:][j]) for j in range(len(i[1:]))} for i in data[1:]}
+    heads = data[0]
+    cost = {i[0]:{heads[j]:int(i[1:][j]) for j in range(len(i[1:]))} for i in data[1:]}
 
     #calling Dijkstra's Algorithm
-    #D, p = dijAlg(data[0], source)
+    #D, P = dijAlg(data[0], source)
     #tree = ', '.join(p.values())
     #costs = ', '.join([f"{k}:{v}" for k,v in D.items()])
 
@@ -128,6 +128,6 @@ if __name__ == '__main__':
     #print("Costs of least-cost paths for node {}:\n {}".format(source, costs))
     #print("\nDistance vector for node {}:", distance)
 
-    result = distanceVector(header)
+    result = distanceVector(heads)
     for i in result:
         print(f"Distance vector for node {i}: {result[i]}")
