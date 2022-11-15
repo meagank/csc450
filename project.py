@@ -11,13 +11,13 @@ def openCSV(file):
 
     return fileArray
 
-def recur(previous:dict, source:str, current:str):
+def recur(previous, source, current):
     if current == source:
         return source
     return recur(previous, source, previous[current]) + current
 
 #shortest path function using recur to find it
-def shortestTree(previous:dict, source:str):
+def shortestTree(previous, source):
     tree = {}
     for i in previous:
         #recur function requries previous, source, and current node
@@ -26,7 +26,7 @@ def shortestTree(previous:dict, source:str):
 
 #implementing Dijkstra's algorithm to calculate shortest path tree/
 #cost of least cost path
-def dijAlg(nodes:list, source:str):
+def dijAlg(nodes, source):
     #recreating equation from slides
     #D(v)- current cost of least cost path
     D = {}
@@ -69,7 +69,7 @@ def dijAlg(nodes:list, source:str):
 
 #creating the Node class
 class Node:
-    allNodes = {}
+    Nodes = {}
 
     def __init__(self, name, nodes):
         self.name = name
@@ -82,7 +82,7 @@ class Node:
         self.Dv[self.name] = self.Dx
         self.adjacent = [i for i in self.Dx if i != name and self.Cx[i] != 9999]  
 
-        Node.allNodes.update({name:self})
+        Node.Nodes.update({name:self})
         self.updateDv()
 
 #implementing Bellman-Ford algorithm to calculate distance vector
@@ -95,8 +95,8 @@ class Node:
 
     def updateDv(self):
         for node in self.adjacent:
-            if node in Node.allNodes:
-                current = Node.allNodes[node]
+            if node in Node.Nodes:
+                current = Node.Nodes[node]
                 self.Dv[current.name] = current.Dx
                 self.bellman(current.name)
 
@@ -112,15 +112,13 @@ def distanceVector(csvFile):
     return {i:Node(i, csvFile) for i in csvFile}
 
 #main function
-if __name__ == '__main__':
+def main():
     file = sys.argv[1]
     source = input("Please, provide the source node: ")
     data = openCSV(file)
     data[0].remove("")
     heads = data[0]
-    headList = ''.join(heads)
-    #print(headList)
-    #print(heads)
+    global cost 
     cost = {i[0]:{heads[j]:int(i[1:][j]) for j in range(len(i[1:]))} for i in data[1:]}
 
     #calling Dijkstra's Algorithm
@@ -136,3 +134,5 @@ if __name__ == '__main__':
     result = distanceVector(heads)
     for i in result:
         print(f"Distance vector for node {i}: {result[i]}")
+
+main()
