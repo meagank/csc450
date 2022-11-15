@@ -128,8 +128,7 @@ def main():
 
     #print statements
     print("Shortest path tree for node {}:\n {}".format(source, tree))
-    print("Costs of least-cost paths for node {}:\n {}".format(source, costs))
-    print("")
+    print("Costs of least-cost paths for node {}:\n {}\n".format(source, costs))
 
 
     result = distanceVector(heads)
